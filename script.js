@@ -1,89 +1,81 @@
-// ======== Ajuste automático de altura no textarea ========
-const campo = document.getElementById("campo");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-campo.addEventListener("input", () => {
-    campo.style.height = "auto"; // reseta a altura
-    campo.style.height = campo.scrollHeight + "px"; // ajusta conforme conteúdo
-});
+// Configuração Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyBZdNC5xIiOdwTbCIEjmcEielf17K2taUM",
+  authDomain: "anime-royal-83c8b.firebaseapp.com",
+  projectId: "anime-royal-83c8b",
+  storageBucket: "anime-royal-83c8b.firebasestorage.app",
+  messagingSenderId: "897346461290",
+  appId: "1:897346461290:web:eea01ad821bd9dfac87413",
+  measurementId: "G-B0JH80K6B4"
+};
 
-// ======== Envio para WhatsApp ========
-document.getElementById("enviar").addEventListener("click", () => {
-    const nome = document.getElementById("nome").value.trim();
-    const mensagem = campo.value.trim();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-    if (!nome || !mensagem) {
-        alert("Por favor, preencha seu nome e mensagem antes de enviar.");
-        return;
+// Carregar MISSÕES
+async function carregarMissoes() {
+  const container = document.getElementById("missoesContainer");
+  container.innerHTML = "";
+  const snapshot = await getDocs(query(collection(db,"missoes"), orderBy("timestamp","desc")));
+  snapshot.forEach(docSnap => {
+    const mis = docSnap.data();
+    const div = document.createElement("div");
+    div.className = "card " + (mis.prioridade==="urgente"?"urgente":"");
+    div.innerHTML = `<strong>${mis.titulo}</strong> (${mis.prioridade.toUpperCase()})<br>${mis.descricao}<br>Data: ${mis.data}`;
+    container.appendChild(div);
+  });
+}
+
+// Carregar BANS
+async function carregarBans() {
+  const container = document.getElementById("bansContainer");
+  container.innerHTML = "";
+  const snapshot = await getDocs(query(collection(db,"bans"), orderBy("timestamp","desc")));
+  snapshot.forEach(docSnap => {
+    const ban = docSnap.data();
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `ID: ${ban.banID}<br>Motivo: ${ban.banMotivo}<br>Data: ${ban.banData}`;
+    container.appendChild(div);
+  });
+}
+
+// Carregar RECADOS
+async function carregarRecados() {
+  const container = document.getElementById("recadosContainer");
+  container.innerHTML = "";
+  const snapshot = await getDocs(query(collection(db,"recados"), orderBy("timestamp","desc")));
+  snapshot.forEach(docSnap => {
+    const rec = docSnap.data();
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `<strong>${rec.titulo}</strong><br>${rec.descricao}<br>Data: ${rec.data}`;
+    container.appendChild(div);
+  });
+}
+
+// Inicializa carregamento
+carregarMissoes();
+carregarBans();
+carregarRecados();
+
+// Accordion
+const acc = document.getElementsByClassName("accordion");
+for(let i=0;i<acc.length;i++){
+  acc[i].addEventListener("click", function(){
+    this.classList.toggle("active");
+    const panel = this.nextElementSibling;
+    const arrow = this.querySelector(".arrow");
+    if(panel.style.display==="block"){
+      panel.style.display="none";
+      arrow.style.transform="rotate(0deg)";
+    } else {
+      panel.style.display="block";
+      arrow.style.transform="rotate(90deg)";
     }
-
-    // Número no formato internacional
-    const numero = "559293429329"; // seu número aqui
-
-    // Mensagem codificada
-    const texto = encodeURIComponent(`Nome: ${nome}\n\nMensagem: ${mensagem}`);
-
-    // Abre via link oficial (funciona no PC e celular)
-    window.open(`https://wa.me/${numero}?text=${texto}`, "_blank");
-});
-
-// accordion//
-const btn = document.querySelector(".accordion-btn");
-const content = document.querySelector(".accordion-content");
-
-btn.addEventListener("click", () => {
-  if (content.style.maxHeight) {
-    content.style.maxHeight = null; // fecha
-  } else {
-    content.style.maxHeight = content.scrollHeight + "px"; // abre
-  }
-});
-
-//cpnfig imgs//
-const slides = document.querySelectorAll(".slide");
-const slidesContainer = document.querySelector(".slides");
-const prevBtn = document.querySelector(".prev");
-const nextBtn = document.querySelector(".next");
-let currentIndex = 0;
-let slideInterval;
-
-function showSlide(index) {
-  // move o container para mostrar o slide atual
-  slidesContainer.style.transform = `translateX(-${index * 100}%)`;
+  });
 }
 
-function nextSlide() {
-  currentIndex = (currentIndex + 1) % slides.length;
-  showSlide(currentIndex);
-}
-
-function prevSlide() {
-  currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-  showSlide(currentIndex);
-}
-
-// autoplay a cada 5 segundos
-function startSlideShow() {
-  slideInterval = setInterval(nextSlide, 5000);
-}
-
-// pausa o autoplay ao passar mouse
-document.querySelector(".slider").addEventListener("mouseenter", () => {
-  clearInterval(slideInterval);
-});
-
-// retoma o autoplay ao tirar mouse
-document.querySelector(".slider").addEventListener("mouseleave", () => {
-  startSlideShow();
-});
-
-prevBtn.addEventListener("click", () => {
-  prevSlide();
-});
-
-nextBtn.addEventListener("click", () => {
-  nextSlide();
-});
-
-// inicia mostrando o slide 0
-showSlide(currentIndex);
-startSlideShow();
