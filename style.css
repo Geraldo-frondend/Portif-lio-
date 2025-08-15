@@ -1,114 +1,45 @@
 body {
-   font-family: "Poppins", sans-serif;
-    margin: 0;
-    
-    background: linear-gradient(135deg, #1b1b42, #541092);
-    /* 135deg = ângulo do degradê, pode ser alterado */
+  font-family: "Segoe UI", sans-serif;
+  background-color: #2f3136;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
 }
 
-#inicio{
-  font-size: 25px;
-  text-align: center;
-  color: #fff;
-}
-#ds{
-  font-size: 16px;
-  color: #aaaa;
-}
+h2 { text-align: center; color: #7289da; margin: 20px 0 10px 0; }
+h3 { margin-bottom: 10px; }
+.container { padding: 15px; max-width: 600px; margin: auto; }
+.section { margin-bottom: 20px; }
+.card { background-color: #36393f; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+.card.urgente { border-left: 5px solid #f04747; }
 
-.txt{
-  width: 300px;
-  display: block; 
-  font-size: 16px;
-  outline: none;
-  border: none;
-  color: #aaaa;
-  background-color: #212153;
-  border-radius: 10px;
-  padding: 10px;
-  margin: 10px auto;
-  box-sizing: border-box;
-  resize: none;
-  overflow: hidden;
-
-}
-
-#enviar{
-  color: #aaa;
-  background-color: #953be6;
-}
-
-#env{
-  display: block;
-  text-align: center;
-  color: #fff;
-}
-
-
-
-
-.slider {
-  display: block;
-  position: relative;
-  width: 200px;   /* ajuste para o tamanho desejado */
-  height: 200px;
-  overflow: hidden;
-  margin: 100px auto;
-  border-radius: 10px;
-}
-
-.slides {
-  display: flex;               /* deixa as imagens lado a lado */
-  width: 100%;
-  height: 100%;
-  transition: transform 0.5s ease-in-out; /* animação suave do deslize */
-}
-
-.slide {
-  min-width: 100%;             /* cada slide ocupa 100% do container */
-  height: 100%;
-  object-fit: cover;           /* para as imagens preencherem bem */
-}
-
-
-
-
-
-
-.accordion-btn {
-  display: block;
-  width: 300px;
-  margin: 10px auto;
-  background-color: #212153;
-  color: #aaaa;
+.accordion {
+  background-color: #36393f;
+  color: white;
   cursor: pointer;
   padding: 10px;
-  border-radius: 10px;
+  width: 100%;
   border: none;
+  text-align: left;
   outline: none;
-  text-align: center;
   font-size: 16px;
-  transition: background 0.3s ease;
+  border-radius:5px;
+  margin-bottom:5px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
+.active, .accordion:hover { background-color: #4f545c; }
+.panel { padding: 0 10px; display: none; background-color: #2f3136; overflow: hidden; border-radius: 5px; margin-bottom:10px;}
+.arrow { transition: transform 0.3s; }
 
-.accordion-btn:hover {
-  background-color: #953be6;
-}
+button { background-color: #7289da; color: white; border: none; padding: 8px; border-radius: 5px; cursor: pointer; margin-top: 5px; width:100%; }
 
-.accordion-content {
-  
-  border-radius: 0 0 10px 10px;
-  display: block;
-  width: 300px;
-  margin: 10px auto;
-  text-align: center;
-  max-height: 0;
-  overflow: hidden;
-  background: #c9cdd6;
-  padding: 0 15px;
-  transition: max-height 0.3s ease;
-}
-
-.accordion-content p {
-  margin: 10px 0;
+/* Background especial para Missões */
+.missoes-background {
+  background: linear-gradient(135deg, #36393f, #2f3136);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  margin-bottom: 20px;
 }
